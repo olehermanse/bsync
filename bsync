@@ -740,6 +740,7 @@ def usage():
 	usage+= "	-v		Verbose\n"
 	usage+= "	-i		Ignore permissions\n"
 	usage+= "	-b		Batch mode (exit on conflict)\n"
+	usage+= "	-y		Yes to 'Apply Actions?'\n"
 	usage+= "	-p PORT		Port for SSH\n"
 	usage+= "	-o SSHARGS	Custom options for SSH\n"
 	printerr(usage)
@@ -748,13 +749,13 @@ def usage():
 
 #### process commandline args
 try:
-	opts, args = getopt.gnu_getopt(sys.argv[1:], "vcibp:o:")
+	opts, args = getopt.gnu_getopt(sys.argv[1:], "vcibyp:o:")
 except getopt.GetoptError as err:
 	printerr(err)
 	usage()
 	sys.exit(2)
 
-verbose = check = ignoreperms = noninteractive = False
+verbose = check = ignoreperms = noninteractive = yes_auto = False
 sshport = None
 sshargs = ""
 for o, a in opts:
@@ -770,6 +771,8 @@ for o, a in opts:
 		sshargs = a
 	elif o == "-b":
 		noninteractive = True
+	elif o == "-y":
+		yes_auto = True
 	else:
 		assert False, "unhandled option"
 
@@ -1023,6 +1026,8 @@ print("Todo in "+args[0]+": "+get_dir_summary(mkdir1,moves1,rm1,rmdirs1, copy21,
 print("Todo in "+args[1]+": "+get_dir_summary(mkdir2,moves2,rm2,rmdirs2, copy12,sync12))
 
 resp = "none"
+if yes_auto:
+    resp = "y"
 while resp != "y" and resp != "n":
 	resp = myinput("Apply actions? [y/N] ").lower()
 	if resp == "": resp = "n"

@@ -27,26 +27,28 @@ Fairly simple:
 
     ./bsync DIRECTORY1 DIRECTORY2
     ./bsync ALICE_DIR  bob@sshserver:BOB_DIR
-   
+
 bsync can also be used to sync with a master directory:
 
     # Alice makes local changes
     ./bsync ALICE_DIR MASTER_DIR
     ./bsync BOB_DIR   MASTER_DIR
     # Bob gets Alice changes, sending his changes to master in the same time
-    
+
 bsync help and options:
 
 ```
 Usage: bsync [options] DIR1 DIR2
 
 	DIR can be user@sshserver:DIR
-	-v              Verbose
-	-i              Ignore permissions
-	-p PORT         Port for SSH
-	-o SSHARGS      Custom options for SSH
+	-v		Verbose
+	-i		Ignore permissions
+	-b		Batch mode (exit on conflict)
+	-y		Yes to 'Apply Actions?'
+	-p PORT		Port for SSH
+	-o SSHARGS	Custom options for SSH
 ```
-    
+
 Features
 --------
 
@@ -88,7 +90,7 @@ Example
     $ ./bsync dir1 dir2
     Loading filelists...
     Identical directories. Nothing to do.
-    
+
 Conflict handling
 -----------------
 
@@ -114,7 +116,7 @@ A sample run with a conflict: file deleted one side and updated the other side.
     rsync: testfile
     Updating filelists...
     Done!
-    
+
 .bsync-ignore files
 -------------------
 
